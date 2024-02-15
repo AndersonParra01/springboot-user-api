@@ -96,8 +96,6 @@ public class UserController {
         return htmlContent.toString();
     }
 
-
-    
     @GetMapping("/generate-excel/{userId}")
     public ResponseEntity<byte[]> generateExcelForUser(@PathVariable Long userId) throws IOException {
         UserModel user = service.getUserById(userId);
@@ -108,9 +106,9 @@ public class UserController {
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Usuario");
 
-            String[] headers =  {"ID", "Nombres", "Apellidos", "Cédula", "Usuario"};
+            String[] headers = { "ID", "Nombres", "Apellidos", "Cédula", "Usuario" };
             Row headerRow = sheet.createRow(0);
-            for(int i = 0; i < headers.length; i++) {
+            for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers[i]);
             }
@@ -124,20 +122,21 @@ public class UserController {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
             HttpHeaders headersRes = new HttpHeaders();
-            headersRes.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+            headersRes.setContentType(
+                    MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
             headersRes.setContentDispositionFormData("attachment", "usuario_" + userId + ".xlsx");
-    
+
             return ResponseEntity.ok()
                     .headers(headersRes)
                     .body(outputStream.toByteArray());
-         } catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/create")
     public UserModel createUser(@RequestBody UserModel user) {
-        return service.createUser(user);
+        return service.create(user);
     }
 
     @PutMapping("/{id}")

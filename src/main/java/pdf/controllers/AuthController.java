@@ -14,7 +14,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public UserModel save(@RequestBody UserModel user) {
-        return userService.createUser(user);
+        return userService.create(user);
     }
 
 }

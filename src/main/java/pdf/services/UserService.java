@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import pdf.models.UserModel;
@@ -16,6 +17,9 @@ public class UserService {
     @Autowired
     UseRepository repository;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     public List<UserModel> getAllUsers() {
         return repository.findAll();
     }
@@ -25,7 +29,9 @@ public class UserService {
                 "No se encontro el usuario con el id" + id));
     }
 
-    public UserModel createUser(UserModel user) {
+    public UserModel create(UserModel user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        System.out.println("FINAL USER" + user);
         return repository.save(user);
     }
 

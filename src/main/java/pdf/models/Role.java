@@ -2,10 +2,8 @@ package pdf.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
